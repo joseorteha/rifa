@@ -6,8 +6,8 @@ export default function ReglamentoPage() {
       <div className="prose prose-sm max-w-none dark:prose-invert">
         <ol>
           <li><strong>Objetivo:</strong> Recaudar fondos para la participación del equipo 'Siera Code' del TecNM Campus Zongolica en el HackaTec 2025 en Pachuca, Hidalgo.</li>
-          <li><strong>Vigencia:</strong> Del 10 de noviembre al 17 de noviembre de 2025, 20:00 hrs.</li>
-          <li><strong>Costo del Boleto:</strong> $35.00 MXN.</li>
+          <li><strong>Vigencia:</strong> Del 12 de noviembre al 21 de noviembre de 2025, 20:00 hrs.</li>
+          <li><strong>Costo del Boleto:</strong> $30.00 MXN.</li>
           <li><strong>Proceso:</strong> Pago → Registro → Validación → Confirmación.</li>
           <li><strong>Transparencia:</strong> Solo se muestran número de boleto, sede y fecha de registro.</li>
           <li><strong>Sorteo:</strong> 21 de noviembre de 2025 a las 20:00 hrs (transmisión en vivo por Facebook).</li>

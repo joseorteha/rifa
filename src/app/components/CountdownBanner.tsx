@@ -16,16 +16,54 @@ function formatRemaining(ms: number) {
 }
 
 export default function CountdownBanner({ endDate }: { endDate: Date }) {
-  const [remaining, setRemaining] = useState<number>(endDate.getTime() - Date.now());
+  // Fecha de inicio de la rifa: 12 de noviembre de 2025
+  const startDate = new Date("2025-11-12T00:00:00");
+  // Fecha de fin: la que se pasa como parámetro (21 de noviembre de 2025)
+  
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
   
   useEffect(() => {
-    const id = setInterval(() => setRemaining(endDate.getTime() - Date.now()), 1000);
+    const id = setInterval(() => setCurrentTime(Date.now()), 1000);
     return () => clearInterval(id);
-  }, [endDate]);
+  }, []);
 
-  const time = formatRemaining(remaining);
+  const now = currentTime;
+  const startTime = startDate.getTime();
+  const endTime = endDate.getTime();
 
-  if (time.expired) {
+  // Determinar el estado actual
+  const beforeStart = now < startTime;
+  const duringRifa = now >= startTime && now <= endTime;
+  const afterEnd = now > endTime;
+
+  // Calcular tiempo restante según el estado
+  let targetTime: number;
+  let timeRemaining: number;
+  let title: string;
+  let description: string;
+  
+  if (beforeStart) {
+    // Antes del inicio - mostrar tiempo hasta que comience
+    targetTime = startTime;
+    timeRemaining = startTime - now;
+    title = "La rifa comienza en:";
+    description = "Prepárate para participar. ¡Pronto podrás comprar tu boleto!";
+  } else if (duringRifa) {
+    // Durante la rifa - mostrar tiempo hasta que termine
+    targetTime = endTime;
+    timeRemaining = endTime - now;
+    title = "El sorteo termina en:";
+    description = "No esperes hasta el último momento. Asegura tu boleto ahora.";
+  } else {
+    // Después del fin - rifa terminada
+    timeRemaining = 0;
+    title = "";
+    description = "";
+  }
+
+  const time = formatRemaining(timeRemaining);
+
+  if (afterEnd) {
     return (
       <Card className="mx-auto max-w-4xl text-center">
         <CardHeader>
@@ -52,10 +90,10 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
           ⏰ Tiempo limitado
         </Badge>
         <CardTitle className="mt-2 text-2xl sm:text-3xl">
-          El sorteo termina en:
+          {title}
         </CardTitle>
         <CardDescription className="text-base">
-          No esperes hasta el último momento. Asegura tu boleto ahora.
+          {description}
         </CardDescription>
       </CardHeader>
 
@@ -86,8 +124,13 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
       <CardFooter className="border-t bg-muted/30 flex-col gap-4 p-6 text-center">
         <div className="space-y-1 text-sm text-muted-foreground">
           <div className="flex items-center justify-center gap-2">
-            <span>📍</span>
-            <span>Sorteo: 18 de noviembre, 8:00 PM</span>
+            <span>📅</span>
+            <span>
+              {beforeStart 
+                ? "Rifa inicia: 12 de noviembre, 12:00 AM"
+                : "Sorteo: 21 de noviembre, 8:00 PM"
+              }
+            </span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <span>🏆</span>
@@ -97,9 +140,9 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
           </div>
         </div>
         
-        <Button size="lg" asChild>
+        <Button size="lg" asChild disabled={beforeStart}>
           <Link href="/comprar">
-            Comprar mi boleto
+            {beforeStart ? "Próximamente disponible" : "Comprar mi boleto"}
           </Link>
         </Button>
       </CardFooter>

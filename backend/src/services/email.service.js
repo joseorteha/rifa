@@ -243,7 +243,7 @@ Si no solicitaste crear una cuenta, puedes ignorar este correo.
               
               <p><strong>Detalles del sorteo:</strong></p>
               <ul>
-                <li>📅 Fecha: 18 de noviembre de 2024</li>
+                <li>📅 Fecha: 21 de noviembre de 2025</li>
                 <li>⏰ Hora: 8:00 PM</li>
                 <li>🎮 Premio: Kit Gamer 4-en-1 Profesional</li>
                 <li>📍 Transmisión en vivo por nuestras redes sociales</li>
