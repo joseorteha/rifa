@@ -1,98 +1,216 @@
-# Rifa Siera Code — Next.js + Supabase
+# 🎯 Rifa Siera Code - HackaTec Nacional 2025
 
-Sitio de rifa digital para apoyar al equipo Siera Code (TecNM Zongolica). Implementado con Next.js (App Router), Tailwind CSS, next-themes y Supabase (DB + Storage). Listo para desplegar en Vercel.
+Sistema web completo para la rifa solidaria del equipo **Siera Code** del TecNM Campus Zongolica para el HackaTec Nacional 2025.
 
-## Páginas
-- `/` Inicio con Hero y contador regresivo.
-- `/comprar` Formulario para registro de boleto con subida de comprobante.
-- `/premios` Tarjetas de premios con descripción técnica.
-- `/reglamento` Reglas y metodología.
-- `/transparencia` Tabla pública con boletos confirmados.
+## 🏆 Descripción del Proyecto
 
-## Variables de entorno
-Ver `.env.example` y configurar en desarrollo y en Vercel:
+Aplicación web moderna desarrollada con **Next.js 15** y **Supabase** para gestionar una rifa que ayudará al equipo Siera Code a representar al TecNM Zongolica en el HackaTec Nacional 2025 en Pachuca.
 
-```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-NEXT_PUBLIC_SORTEO_AT="2025-11-18T20:00:00"
-```
+### 🎮 Premio: Kit Gamer 4-en-1 Lobo del Trueno TF800
+- Teclado mecánico con switches Cherry MX Red (104 teclas, español QWERTY con letra Ñ)
+- Mouse óptico gaming con sensor PixArt 3360 (1,200 DPI)
+- Audífonos gaming premium con cable trenzado de 210cm
+- Mousepad antideslizante incluido
+- Iluminación RGBW en teclado y mouse
+- Compatible con PC, Mac, PS4, PS5, Xbox, Steam Deck y más
 
-## Supabase — SQL
-Ejecuta en el editor SQL de Supabase:
+## ✨ Características Principales
 
-```sql
--- Tipos
-CREATE TYPE boleto_estado AS ENUM ('pendiente','confirmado','ganador');
-CREATE TYPE tipo_participante AS ENUM ('Estudiante TecNM','Público General');
-CREATE TYPE sedes_zongolica AS ENUM ('Zongolica','Nogales','Tezonapa','Tehuipango','Tequila','Cuichapa','Acultzinapa');
+### 🎫 **Sistema de Rifa**
+- **200 boletos** disponibles (números 001-200)
+- Precio: **$30 MXN** por boleto
+- Fechas: **12 al 21 de noviembre de 2025**
+- Sorteo: **21 de noviembre a las 8:00 PM**
 
--- Tabla boletos
-CREATE TABLE public.boletos (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  nombre text NOT NULL,
-  correo text UNIQUE NOT NULL,
-  telefono text,
-  tipo_participante tipo_participante NOT NULL,
-  sede sedes_zongolica,
-  fecha_registro timestamptz DEFAULT now(),
-  numero_boleto text UNIQUE NOT NULL,
-  estado boleto_estado DEFAULT 'pendiente',
-  comprobante_url text
-);
+### 👥 **Gestión de Usuarios**
+- Registro y autenticación completa
+- Verificación por email (Gmail y Resend configurados)
+- Perfiles de usuario personalizados
+- Soporte para estudiantes TecNM con número de control
 
--- Sequence auxiliar (opcional) y RPC
-CREATE SEQUENCE public.boleto_sequence START 1;
+### 💳 **Sistema de Compra**
+- Selección interactiva de números de boleto
+- Carga de comprobantes de pago
+- Validación automática de disponibilidad
+- Estados de boletos: disponible, reservado, pendiente, confirmado
 
-CREATE OR REPLACE FUNCTION public.generar_numero_boleto()
-RETURNS text LANGUAGE plpgsql AS $$
-DECLARE
-  seq_id bigint;
-  numero text;
-BEGIN
-  SELECT nextval('public.boleto_sequence') INTO seq_id;
-  numero := to_char(seq_id, 'FM0000');
-  RETURN 'SC-' || numero;
-END;
-$$;
-```
+### 📱 **Diseño Responsive**
+- Interfaz moderna con **shadcn/ui** y **Tailwind CSS**
+- Totalmente optimizado para móviles
+- Galería interactiva de imágenes del premio
+- Modo oscuro/claro con next-themes
 
-### Reservas y RLS
-- Activa RLS en `boletos` y crea la tabla `reservas_boletos` con políticas de acceso por usuario.
-- El archivo `supabase/schema.sql` contiene:
-  - Políticas de lectura en `boletos` (público ve confirmados, autenticados ven propios).
-  - Tabla `reservas_boletos` con `user_id`, `numero_boleto`, `expira_at` y restricción única por número.
-  - Políticas para insertar/consultar/eliminar solo tus reservas.
-  - Vista `vw_boletos_estado` que marca como `pendiente` los números con reserva activa.
-  - Índices en `expira_at` y `user_id`, y función `cleanup_reservas_expiradas()`.
+### 🔍 **Transparencia Total**
+- Vista pública de todos los boletos vendidos
+- Tabla de disponibilidad en tiempo real
+- Información completa de participantes
+- Estado actualizado de la rifa
 
-Para aplicar:
-1) Abre Supabase → SQL Editor → pega el contenido de `supabase/schema.sql` → ejecutar.
-2) Crea una tarea programada (Scheduler) opcional que ejecute `select public.cleanup_reservas_expiradas();` cada 10 min.
-3) Habilita Realtime en la base de datos si quieres ver reservas en vivo.
+## 🛠️ Stack Tecnológico
 
-### Storage
-- Crear bucket `comprobantes` como privado.
-- La subida se realiza desde Server Actions usando el Service Role.
+### **Frontend**
+- **Next.js 15** con App Router
+- **React 19** con TypeScript
+- **Tailwind CSS** + **shadcn/ui**
+- **Framer Motion** para animaciones
+- **next-themes** para modo oscuro
 
-## Desarrollo local
+### **Backend**
+- **Node.js** + **Express**
+- **Supabase** (PostgreSQL)
+- **Multer** para carga de archivos
+- **JWT** para autenticación
+- **bcryptjs** para encriptación
 
+### **Servicios**
+- **Gmail API** para envío de emails (500/día)
+- **Resend** como servicio de backup
+- **Supabase Storage** para comprobantes
+
+## 🚀 Instalación y Configuración
+
+### **Prerequisitos**
+- Node.js 18+ 
+- NPM o Yarn
+- Cuenta de Supabase
+- Cuenta de Gmail con App Password
+
+### **1. Clonar el Repositorio**
 ```bash
+git clone git@github.com:joseorteha/rifa.git
+cd rifa
+```
+
+### **2. Instalar Dependencias**
+```bash
+# Frontend
 npm install
+
+# Backend
+cd backend
+npm install
+```
+
+### **3. Configuración de Variables de Entorno**
+
+#### **Frontend (.env.local)**
+```env
+NEXT_PUBLIC_SUPABASE_URL=tu_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu_supabase_anon_key
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+NEXT_PUBLIC_SORTEO_AT=2025-11-21T20:00:00
+```
+
+#### **Backend (.env)**
+```env
+# Supabase
+SUPABASE_URL=tu_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=tu_service_role_key
+
+# JWT
+JWT_SECRET=tu_jwt_secret_muy_seguro
+
+# Gmail
+GMAIL_USER=tu_gmail@gmail.com
+GMAIL_APP_PASSWORD=tu_app_password
+
+# Resend (backup)
+RESEND_API_KEY=tu_resend_api_key
+
+# Servidor
+PORT=5000
+```
+
+### **4. Configurar Base de Datos**
+```bash
+# Ejecutar en Supabase SQL Editor:
+# 1. supabase/agregar_numero_control.sql
+# 2. supabase/agregar_50_boletos.sql
+```
+
+### **5. Iniciar el Proyecto**
+```bash
+# Backend (Terminal 1)
+cd backend
+npm start
+
+# Frontend (Terminal 2)  
 npm run dev
 ```
 
-Abrir `http://localhost:3000/`.
+## 📊 Estructura del Proyecto
 
-## Deploy a Vercel
-- Crear proyecto en Vercel enlazando este repo.
-- Configurar las variables de entorno anteriores.
-- Deploy: `vercel --prod` o push al repo enlazado.
+```
+rifa-web/
+├── src/app/                    # Páginas y componentes de Next.js
+│   ├── auth/                   # Autenticación (login, registro, verificación)
+│   ├── components/             # Componentes reutilizables
+│   ├── comprar/               # Proceso de compra de boletos
+│   ├── premios/               # Galería del premio
+│   ├── transparencia/         # Transparencia de boletos
+│   └── perfil/                # Perfil de usuario
+├── backend/                    # API y servicios backend
+│   ├── src/controllers/        # Controladores de API
+│   ├── src/routes/            # Rutas de Express
+│   ├── src/services/          # Servicios (email, etc.)
+│   └── src/middlewares/       # Middlewares de autenticación
+├── supabase/                  # Scripts de base de datos
+├── public/imagenes/           # Imágenes del premio
+└── components.json            # Configuración de shadcn/ui
+```
 
-## Notas de seguridad
-- El `SUPABASE_SERVICE_ROLE_KEY` solo se usa en el servidor (Server Actions).
-- Validaciones redundantes: cliente y servidor.
+## 🔐 Características de Seguridad
 
-## Flujo admin (manual)
-- Verificar transferencias y cambiar `estado` de `pendiente` a `confirmado` desde Supabase Dashboard.
+- **Autenticación JWT** con tokens seguros
+- **Validación de datos** en frontend y backend  
+- **Encriptación bcrypt** para contraseñas
+- **Variables de entorno** para datos sensibles
+- **CORS configurado** para peticiones seguras
+- **Validación de archivos** para comprobantes
+
+## 📧 Sistema de Notificaciones
+
+- **Verificación de email** obligatoria para registro
+- **Confirmación de compra** automática
+- **Templates HTML** profesionales
+- **Fallback** entre Gmail y Resend
+- **Límites de envío** configurados
+
+## 🎨 Características de UI/UX
+
+- **Diseño moderno** con componentes shadcn/ui
+- **Galería interactiva** con modales de zoom
+- **Animaciones fluidas** con Framer Motion
+- **Responsive design** para todos los dispositivos
+- **Modo oscuro/claro** persistente
+- **Loading states** y feedback visual
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crear una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
+3. Commit tus cambios (`git commit -m 'Agregar nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Crear un Pull Request
+
+## 👥 Equipo Siera Code
+
+Estudiantes del **TecNM Campus Zongolica** participando en el **HackaTec Nacional 2025**.
+
+## 📜 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
+
+## 🎯 Estado del Proyecto
+
+✅ **Listo para producción**
+- Sistema de rifa completamente funcional
+- 200 boletos configurados ($30 MXN c/u)
+- Fechas: 12-21 noviembre 2025
+- Galería interactiva del premio
+- Sistema de emails operativo
+- Diseño responsive optimizado
+
+---
+
+**¡Apoya al talento del TecNM Zongolica! 🚀**
