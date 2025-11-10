@@ -193,7 +193,7 @@ export default function RegisterPage() {
               type="submit"
               className="w-full"
             >
-              {loading ? "Creando cuenta..." : "Crear cuenta"}
+              {loading ? "Creando cuenta y enviando email..." : "Crear cuenta"}
             </Button>
           </form>
         </CardContent>
