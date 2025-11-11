@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { authAPI, User } from "@/lib/api";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 
 export default function Header() {
@@ -12,12 +12,12 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   
-  // Función para cargar el usuario actual
-  const loadUser = () => {
+  // Función para cargar el usuario actual (sin causar re-renders)
+  const loadUser = useCallback(() => {
     const currentUser = authAPI.getCurrentUser();
     setUser(currentUser);
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     // Cargar usuario inicial
@@ -38,22 +38,11 @@ export default function Header() {
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('authChange', handleAuthChange);
 
-    // Verificar periodicamente si hay cambios (para casos edge)
-    const interval = setInterval(() => {
-      const currentUser = authAPI.getCurrentUser();
-      if (!user && currentUser) {
-        loadUser();
-      } else if (user && !currentUser) {
-        loadUser();
-      }
-    }, 1000);
-
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('authChange', handleAuthChange);
-      clearInterval(interval);
     };
-  }, [user]);
+  }, [loadUser]); // ✅ Solo loadUser como dependencia
 
   const handleLogout = () => {
     authAPI.logout();
@@ -163,6 +152,7 @@ export default function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
                 <div className="flex flex-col space-y-6">
                   {/* Logo Mobile */}
                   <Link 
