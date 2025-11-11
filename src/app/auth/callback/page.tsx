@@ -19,18 +19,53 @@ export default function AuthCallbackPage() {
     }
 
     if (token) {
-      // Guardar token en localStorage
-      localStorage.setItem('token', token);
-      setStatus('success');
-      
-      // Redirigir después de un momento
-      setTimeout(() => {
-        router.push('/comprar');
-      }, 2000);
+      try {
+        // Guardar token en localStorage
+        localStorage.setItem('token', token);
+        
+        // Obtener información del usuario usando el token
+        fetchUserInfo(token);
+      } catch (err) {
+        console.error('Error guardando token:', err);
+        setStatus('error');
+      }
     } else {
       setStatus('error');
     }
   }, [router]);
+
+  const fetchUserInfo = async (token: string) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/profile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const userInfo = await response.json();
+        
+        // Guardar información del usuario en localStorage
+        localStorage.setItem('user', JSON.stringify(userInfo));
+        
+        // Disparar evento de cambio de autenticación para actualizar el Header
+        window.dispatchEvent(new CustomEvent('authChange'));
+        
+        setStatus('success');
+        
+        // Redirigir después de un momento
+        setTimeout(() => {
+          router.push('/comprar');
+        }, 2000);
+      } else {
+        throw new Error('Error obteniendo información del usuario');
+      }
+    } catch (err) {
+      console.error('Error obteniendo información del usuario:', err);
+      setStatus('error');
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-8 space-y-6">
@@ -39,7 +74,7 @@ export default function AuthCallbackPage() {
           {status === 'loading' && (
             <>
               <div className="animate-spin h-8 w-8 border-b-2 border-primary rounded-full mx-auto"></div>
-              <p>Procesando autenticación...</p>
+              <p>Procesando autenticación con Google...</p>
             </>
           )}
           
@@ -50,7 +85,7 @@ export default function AuthCallbackPage() {
                 ¡Inicio de sesión exitoso!
               </h2>
               <p className="text-sm text-muted-foreground">
-                Redirigiendo a la página de compra...
+                Bienvenido a Rifa Siera Code. Redirigiendo a la página de compra...
               </p>
             </>
           )}
@@ -62,7 +97,7 @@ export default function AuthCallbackPage() {
                 Error de autenticación
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
-                Hubo un problema al iniciar sesión con Google.
+                Hubo un problema al iniciar sesión con Google. Por favor, inténtalo de nuevo.
               </p>
               <button 
                 onClick={() => router.push('/auth/login')}

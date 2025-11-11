@@ -91,13 +91,9 @@ export default function PerfilPage() {
           </div>
           
           <div>
-            <p className="text-sm text-muted-foreground">Estado de verificación</p>
+            <p className="text-sm text-muted-foreground">Estado de la cuenta</p>
             <p className="font-medium">
-              {user.email_verificado ? (
-                <span className="text-green-600">✓ Email verificado</span>
-              ) : (
-                <span className="text-orange-600">⚠ Email no verificado</span>
-              )}
+              <span className="text-green-600">✓ Cuenta activa</span>
             </p>
           </div>
 
@@ -106,40 +102,23 @@ export default function PerfilPage() {
             <p className="font-mono text-xs">{user.id}</p>
           </div>
         </div>
-
-        {!user.email_verificado && (
-          <div className="rounded-md border p-4 bg-accent/30">
-            <p className="text-sm">
-              <strong>Paso siguiente:</strong> Verifica tu correo para poder comprar boletos.
-            </p>
-            <Link href="/auth/verify" className="inline-block mt-2 px-3 py-2 rounded-md border hover:bg-accent text-sm">
-              Verificar correo
-            </Link>
-          </div>
-        )}
       </div>
 
       {/* Boletos Comprados */}
       <div className="rounded-lg border bg-card p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">Mis Boletos</h2>
-          {user.email_verificado && (
-            <Link href="/comprar" className="px-4 py-2 rounded-md bg-primary text-white text-sm">
-              Comprar más boletos
-            </Link>
-          )}
+          <Link href="/comprar" className="px-4 py-2 rounded-md bg-primary text-white text-sm">
+            Comprar más boletos
+          </Link>
         </div>
 
         {boletos.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">Aún no has comprado ningún boleto</p>
-            {user.email_verificado ? (
-              <Link href="/comprar" className="inline-block px-4 py-2 rounded-md bg-primary text-white">
-                Comprar mi primer boleto
-              </Link>
-            ) : (
-              <p className="text-sm text-muted-foreground">Verifica tu correo para poder comprar boletos</p>
-            )}
+            <Link href="/comprar" className="inline-block px-4 py-2 rounded-md bg-primary text-white">
+              Comprar mi primer boleto
+            </Link>
           </div>
         ) : (
           <div className="space-y-4">

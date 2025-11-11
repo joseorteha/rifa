@@ -10,15 +10,56 @@ import { Badge } from "@/components/ui/badge";
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   
-  useEffect(() => {
+  // Función para cargar el usuario actual
+  const loadUser = () => {
     const currentUser = authAPI.getCurrentUser();
     setUser(currentUser);
-  }, []);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    // Cargar usuario inicial
+    loadUser();
+
+    // Escuchar cambios en localStorage (para OAuth y login)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'token' || e.key === 'user') {
+        loadUser();
+      }
+    };
+
+    // Escuchar eventos personalizados de autenticación
+    const handleAuthChange = () => {
+      loadUser();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('authChange', handleAuthChange);
+
+    // Verificar periodicamente si hay cambios (para casos edge)
+    const interval = setInterval(() => {
+      const currentUser = authAPI.getCurrentUser();
+      if (!user && currentUser) {
+        loadUser();
+      } else if (user && !currentUser) {
+        loadUser();
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('authChange', handleAuthChange);
+      clearInterval(interval);
+    };
+  }, [user]);
 
   const handleLogout = () => {
     authAPI.logout();
     setUser(null);
+    // Disparar evento de cambio de autenticación
+    window.dispatchEvent(new CustomEvent('authChange'));
   };
 
   const navigation = [
@@ -61,12 +102,22 @@ export default function Header() {
           <div className="hidden items-center space-x-4 md:flex">
             <ThemeToggle />
             
-            {user ? (
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                <span className="text-sm text-muted-foreground">Cargando...</span>
+              </div>
+            ) : user ? (
               <div className="flex items-center space-x-3">
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/perfil" className="flex items-center space-x-2">
                     <span className="text-sm">👋</span>
                     <span className="font-medium">{user.nombre.split(' ')[0]}</span>
+                    {user.email_verificado && (
+                      <Badge variant="secondary" className="text-xs">
+                        ✓
+                      </Badge>
+                    )}
                   </Link>
                 </Button>
                 <Button
@@ -143,7 +194,12 @@ export default function Header() {
                   </nav>
 
                   <div className="border-t pt-6">
-                    {user ? (
+                    {loading ? (
+                      <div className="flex items-center space-x-2 p-2">
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                        <span className="text-sm text-muted-foreground">Cargando...</span>
+                      </div>
+                    ) : user ? (
                       <div className="space-y-4">
                         <Button variant="ghost" className="w-full justify-start" asChild>
                           <Link 
@@ -153,6 +209,11 @@ export default function Header() {
                           >
                             <span className="text-sm">👤</span>
                             <span>Mi Perfil ({user.nombre.split(' ')[0]})</span>
+                            {user.email_verificado && (
+                              <Badge variant="secondary" className="text-xs ml-auto">
+                                ✓
+                              </Badge>
+                            )}
                           </Link>
                         </Button>
                         <Button
