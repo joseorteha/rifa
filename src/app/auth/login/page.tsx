@@ -19,20 +19,19 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await authAPI.login({ email, password });
+      await authAPI.login({ email, password });
       
-      if (!response.user.email_verificado) {
-        setError("Debes verificar tu correo antes de continuar. Revisa tu bandeja de entrada.");
-        setLoading(false);
-        return;
-      }
-
-      // Redirigir a la página de compra
+      // ✅ Ya no verificar email - redirigir directo
       router.push("/comprar");
     } catch (err: any) {
       setError(err.response?.data?.error || "Error al iniciar sesión");
       setLoading(false);
     }
+  }
+
+  function handleGoogleLogin() {
+    // Redirigir a Google OAuth
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   }
 
   return (
@@ -48,7 +47,29 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-center">Accede a tu cuenta</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* ✨ Botón de Google OAuth */}
+          <Button
+            onClick={handleGoogleLogin}
+            variant="outline"
+            className="w-full relative"
+            type="button"
+          >
+            <span className="mr-2">🔴</span>
+            Continuar con Google
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                O con email
+              </span>
+            </div>
+          </div>
+
           <form className="space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
               <label className="block text-sm font-medium">Correo electrónico</label>
@@ -112,14 +133,6 @@ export default function LoginPage() {
               Crear cuenta nueva
             </Link>
           </Button>
-
-          <div className="text-center">
-            <Button variant="link" asChild className="text-sm">
-              <Link href="/auth/verify">
-                ¿Necesitas verificar tu correo?
-              </Link>
-            </Button>
-          </div>
         </CardContent>
       </Card>
     </div>

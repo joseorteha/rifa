@@ -25,6 +25,11 @@ export default function RegisterPage() {
     });
   };
 
+  function handleGoogleRegister() {
+    // Redirigir a Google OAuth
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  }
+
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -57,10 +62,10 @@ export default function RegisterPage() {
 
       setSuccess(true);
       
-      // Redirigir después de 3 segundos
+      // ✅ Redirigir directo sin verificación
       setTimeout(() => {
         router.push("/auth/login");
-      }, 3000);
+      }, 2000);
 
     } catch (err: any) {
       setError(err.response?.data?.error || "Error al crear la cuenta");
@@ -78,20 +83,19 @@ export default function RegisterPage() {
             </div>
             <h2 className="text-2xl font-bold">¡Cuenta creada!</h2>
             <p className="text-muted-foreground">
-              Te hemos enviado un correo de verificación a <strong>{formData.email}</strong>
+              Tu cuenta para <strong>{formData.email}</strong> está lista para usar.
             </p>
 
-            <Card className="bg-blue-50 dark:bg-blue-900/20">
+            <Card className="bg-green-50 dark:bg-green-900/20">
               <CardContent className="p-4">
                 <p className="text-sm">
-                  <strong>📧 Paso siguiente:</strong> Revisa tu bandeja de entrada y haz clic en el enlace
-                  de verificación para activar tu cuenta.
+                  <strong>🎯 ¡Todo listo!</strong> Ya puedes iniciar sesión y comprar tus boletos.
                 </p>
               </CardContent>
             </Card>
 
             <p className="text-sm text-muted-foreground">
-              Redirigiendo al login en 3 segundos...
+              Redirigiendo al login en 2 segundos...
             </p>
           </CardContent>
         </Card>
@@ -112,7 +116,29 @@ export default function RegisterPage() {
         <CardHeader>
           <CardTitle className="text-center">Únete a la rifa</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* ✨ Botón de Google OAuth */}
+          <Button
+            onClick={handleGoogleRegister}
+            variant="outline"
+            className="w-full relative"
+            type="button"
+          >
+            <span className="mr-2">🔴</span>
+            Crear cuenta con Google
+          </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                O con email
+              </span>
+            </div>
+          </div>
+
           <form className="space-y-4" onSubmit={handleRegister}>
             <div className="space-y-2">
               <label className="block text-sm font-medium">
@@ -193,7 +219,7 @@ export default function RegisterPage() {
               type="submit"
               className="w-full"
             >
-              {loading ? "Creando cuenta y enviando email..." : "Crear cuenta"}
+              {loading ? "Creando cuenta..." : "Crear cuenta"}
             </Button>
           </form>
         </CardContent>
