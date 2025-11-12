@@ -73,9 +73,9 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex justify-center">
-          <Button asChild>
-            <Link href="/transparencia">
-              Ver resultados
+          <Button className="shadow-sm bg-primary hover:bg-primary/90 text-primary-foreground border border-border" asChild>
+            <Link href="/transparencia" className="flex items-center gap-2">
+              🏆 Ver resultados
             </Link>
           </Button>
         </CardFooter>
@@ -140,9 +140,9 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
           </div>
         </div>
         
-        <Button size="lg" asChild disabled={beforeStart}>
-          <Link href="/comprar">
-            {beforeStart ? "Próximamente disponible" : "Comprar mi boleto"}
+        <Button size="lg" className="shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary/20 hover:border-primary/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed" asChild disabled={beforeStart}>
+          <Link href="/comprar" className="flex items-center gap-2">
+            {beforeStart ? "⏳ Próximamente disponible" : "🎫 Comprar mi boleto"}
           </Link>
         </Button>
       </CardFooter>

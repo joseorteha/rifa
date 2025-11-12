@@ -151,7 +151,7 @@ export default function Header() {
                   <span className="sr-only">Menú</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 border-l border-border">
                 <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
                 <div className="flex flex-col space-y-6">
                   {/* Logo Mobile */}

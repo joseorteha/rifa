@@ -37,13 +37,13 @@ export default async function Home() {
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-6 sm:flex-row">
-            <Button size="lg" asChild>
-              <Link href="/comprar">
-                Comprar boleto ahora ($30 MXN)
+            <Button size="lg" className="shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary/20 hover:border-primary/30 transition-all duration-200" asChild>
+              <Link href="/comprar" className="flex items-center gap-2">
+                🎫 Comprar boleto ahora ($30 MXN)
               </Link>
             </Button>
-            <div className="flex flex-col items-center">
-              <div className="text-2xl font-bold tracking-tight">$35 MXN</div>
+            <div className="flex flex-col items-center p-4 rounded-lg bg-accent/30 border border-border/30 shadow-sm">
+              <div className="text-2xl font-bold tracking-tight text-foreground">$35 MXN</div>
               <div className="text-sm text-muted-foreground">por boleto</div>
             </div>
           </div>
@@ -77,9 +77,9 @@ export default async function Home() {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <Button variant="outline" asChild>
-              <Link href="/premios">
-                Ver detalles del premio
+            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+              <Link href="/premios" className="flex items-center gap-2">
+                🏆 Ver detalles del premio
               </Link>
             </Button>
           </div>
@@ -107,7 +107,7 @@ export default async function Home() {
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <Card className="text-center">
+            <Card className="text-center shadow-sm border border-border bg-background hover:bg-accent/30 transition-colors">
               <CardHeader>
                 <div className="mx-auto text-4xl">🔍</div>
                 <CardTitle className="mt-4">Verificación pública</CardTitle>
@@ -119,7 +119,7 @@ export default async function Home() {
               </CardContent>
             </Card>
             
-            <Card className="text-center">
+            <Card className="text-center shadow-sm border border-border bg-background hover:bg-accent/30 transition-colors">
               <CardHeader>
                 <div className="mx-auto text-4xl">📺</div>
                 <CardTitle className="mt-4">Sorteo en vivo</CardTitle>
@@ -133,14 +133,14 @@ export default async function Home() {
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button variant="outline" asChild>
-              <Link href="/transparencia">
-                Ver boletos participantes
+            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+              <Link href="/transparencia" className="flex items-center gap-2">
+                👁️ Ver boletos participantes
               </Link>
             </Button>
-            <Button variant="ghost" asChild>
-              <Link href="/reglamento">
-                Leer reglamento
+            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+              <Link href="/reglamento" className="flex items-center gap-2">
+                📋 Leer reglamento
               </Link>
             </Button>
           </div>
@@ -158,9 +158,9 @@ export default async function Home() {
               Cada boleto cuenta. Cada apoyo nos acerca más a representar al TecNM Zongolica en el HackaTec Nacional 2025.
             </p>
             <div className="mt-8">
-              <Button size="lg" asChild>
-                <Link href="/comprar">
-                  Comprar mi boleto ahora
+              <Button size="lg" className="shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary/20 hover:border-primary/30 transition-all duration-200" asChild>
+                <Link href="/comprar" className="flex items-center gap-2">
+                  🎫 Comprar mi boleto ahora
                 </Link>
               </Button>
             </div>

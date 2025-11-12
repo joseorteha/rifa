@@ -59,7 +59,7 @@ export default function PrizeCard({
           <h4 className="text-sm font-medium">Incluye:</h4>
           <div className="grid gap-3">
             {bullets.map((bullet, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-lg border bg-card p-3">
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-border bg-background p-3 shadow-sm hover:bg-accent/30 transition-colors">
                 <span className="text-lg leading-none shrink-0">{bullet.icon}</span>
                 <span className="text-sm leading-relaxed">{bullet.text}</span>
               </div>
