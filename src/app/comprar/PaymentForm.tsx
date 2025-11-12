@@ -377,10 +377,18 @@ export default function PaymentForm() {
               )}
             </div>
 
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="terminos" required className="w-4 h-4" />
-              <label htmlFor="terminos" className="text-sm">
-                Acepto los términos y condiciones de la Rifa Siera Code
+            <div className="flex items-start gap-2">
+              <input type="checkbox" id="terminos" required className="w-4 h-4 mt-0.5 shrink-0" />
+              <label htmlFor="terminos" className="text-sm leading-relaxed">
+                Acepto los{" "}
+                <Link 
+                  href="/terminos" 
+                  target="_blank"
+                  className="text-primary underline hover:text-primary/80 font-medium"
+                >
+                  términos y condiciones
+                </Link>
+                {" "}de la Rifa Siera Code
               </label>
             </div>
 

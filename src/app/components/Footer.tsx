@@ -51,6 +51,11 @@ export default function Footer() {
                   Reglamento
                 </Link>
               </li>
+              <li>
+                <Link href="/terminos" className="text-muted-foreground transition-colors hover:text-foreground">
+                  Términos y Condiciones
+                </Link>
+              </li>
             </ul>
           </div>
 
