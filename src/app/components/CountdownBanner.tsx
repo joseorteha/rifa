@@ -16,8 +16,8 @@ function formatRemaining(ms: number) {
 }
 
 export default function CountdownBanner({ endDate }: { endDate: Date }) {
-  // Fecha de inicio de la rifa: 12 de noviembre de 2025
-  const startDate = new Date("2025-11-12T00:00:00");
+  // Fecha de inicio de la rifa: 12 de noviembre de 2025 a las 12:00 PM (hora local)
+  const startDate = new Date(2025, 10, 12, 12, 0, 0);
   // Fecha de fin: la que se pasa como parámetro (21 de noviembre de 2025)
   
   const [currentTime, setCurrentTime] = useState<number>(Date.now());
@@ -127,7 +127,7 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
             <span>📅</span>
             <span>
               {beforeStart 
-                ? "Rifa inicia: 12 de noviembre, 12:00 AM"
+                ? "Rifa inicia: 12 de noviembre, 12:00 PM"
                 : "Sorteo: 21 de noviembre, 8:00 PM"
               }
             </span>

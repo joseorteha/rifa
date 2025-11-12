@@ -44,7 +44,7 @@ export default async function Home() {
               </Link>
             </Button>
             <div className="flex flex-col items-center p-4 rounded-lg bg-accent/30 border border-border/30 shadow-sm">
-              <div className="text-2xl font-bold tracking-tight text-foreground">$35 MXN</div>
+              <div className="text-2xl font-bold tracking-tight text-foreground">$30 MXN</div>
               <div className="text-sm text-muted-foreground">por boleto</div>
             </div>
           </div>

@@ -1,10 +1,9 @@
 "use client";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
-import { User, Hash, Landmark, FileUp, Clock, CheckCircle, ChevronDown, Copy, Check } from "lucide-react";
+import { useState } from "react";
+import { User, Hash, Landmark, FileUp, Clock, CheckCircle, ChevronDown, Copy, Check, ArrowRight } from "lucide-react";
 
 type StepsModalProps = {
   buttonLabel?: string;
@@ -20,9 +19,7 @@ export default function StepsModal({
   buttonSize = "lg",
 }: StepsModalProps) {
   const [showBank, setShowBank] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [tickets, setTickets] = useState<number>(1);
   const bankName = process.env.NEXT_PUBLIC_BANK_NAME || "[Nombre del Banco]";
   const bankBeneficiary =
     process.env.NEXT_PUBLIC_PAYEE_NAME ||
@@ -35,28 +32,8 @@ export default function StepsModal({
   const transferConcept = process.env.NEXT_PUBLIC_TRANSFER_CONCEPT || "Tu nombre o usuario en la web";
   const [copied, setCopied] = useState<"clabe" | "concept" | null>(null);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const el = containerRef.current;
-    const onScroll = () => {
-      const center = el.scrollLeft + el.clientWidth / 2;
-      let closestIndex = 0;
-      let closestDist = Infinity;
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const dist = Math.abs(center - cardCenter);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closestIndex = i;
-        }
-      });
-      setActiveStep(closestIndex);
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
+  const pricePerTicket = 30;
+  const totalPrice = tickets * pricePerTicket;
 
   const copyToClipboard = async (text: string, field: "clabe" | "concept") => {
     try {
@@ -68,160 +45,405 @@ export default function StepsModal({
     }
   };
 
-  const chipActiveClasses = [
-    "bg-blue-600 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500",
-    "bg-purple-600 text-white border-purple-600 dark:bg-purple-500 dark:border-purple-500",
-    "bg-green-600 text-white border-green-600 dark:bg-green-500 dark:border-green-500",
-    "bg-amber-600 text-white border-amber-600 dark:bg-amber-500 dark:border-amber-500",
-    "bg-teal-600 text-white border-teal-600 dark:bg-teal-500 dark:border-teal-500",
-    "bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-500 dark:border-emerald-500",
+  const decrement = () => setTickets((n) => Math.max(1, n - 1));
+  const increment = () => setTickets((n) => Math.min(5, n + 1));
+
+  const steps = [
+    {
+      icon: User,
+      title: "Regístrate o inicia sesión",
+      description: "Crea tu cuenta o entra con tu usuario para poder registrar tus boletos y subir comprobantes.",
+      gradient: "from-blue-500 to-cyan-500",
+      bgColor: "bg-blue-50/80 dark:bg-blue-950/50",
+      borderColor: "border-blue-200 dark:border-blue-800",
+      iconBg: "bg-gradient-to-br from-blue-500 to-cyan-500",
+      number: "01"
+    },
+    {
+      icon: Hash,
+      title: "Selecciona tus números",
+      description: "Elige boletos disponibles. Hasta 5 por persona; verifica disponibilidad en Transparencia.",
+      gradient: "from-purple-500 to-pink-500",
+      bgColor: "bg-purple-50/80 dark:bg-purple-950/50",
+      borderColor: "border-purple-200 dark:border-purple-800",
+      iconBg: "bg-gradient-to-br from-purple-500 to-pink-500",
+      number: "02",
+      interactive: true
+    },
+    {
+      icon: Landmark,
+      title: "Realiza tu transferencia",
+      description: "Paga $30.00 MXN por boleto (o múltiplos si compras más).",
+      gradient: "from-green-500 to-emerald-500",
+      bgColor: "bg-green-50/80 dark:bg-green-950/50",
+      borderColor: "border-green-200 dark:border-green-800",
+      iconBg: "bg-gradient-to-br from-green-500 to-emerald-500",
+      number: "03",
+      expandable: true
+    },
+    {
+      icon: FileUp,
+      title: "Sube tu comprobante",
+      description: "Registra tus datos y sube el archivo (JPG, PNG o PDF).",
+      gradient: "from-amber-500 to-orange-500",
+      bgColor: "bg-amber-50/80 dark:bg-amber-950/50",
+      borderColor: "border-amber-200 dark:border-amber-800",
+      iconBg: "bg-gradient-to-br from-amber-500 to-orange-500",
+      number: "04"
+    },
+    {
+      icon: Clock,
+      title: "Validación manual",
+      description: "Nuestro equipo revisa tu comprobante. Puede tomar hasta 24 horas.",
+      gradient: "from-teal-500 to-cyan-500",
+      bgColor: "bg-teal-50/80 dark:bg-teal-950/50",
+      borderColor: "border-teal-200 dark:border-teal-800",
+      iconBg: "bg-gradient-to-br from-teal-500 to-cyan-500",
+      number: "05"
+    },
+    {
+      icon: CheckCircle,
+      title: "Confirmación y Transparencia",
+      description: "Al confirmar, tu boleto aparece públicamente en Transparencia y participa en el sorteo.",
+      gradient: "from-emerald-500 to-green-500",
+      bgColor: "bg-emerald-50/80 dark:bg-emerald-950/50",
+      borderColor: "border-emerald-200 dark:border-emerald-800",
+      iconBg: "bg-gradient-to-br from-emerald-500 to-green-500",
+      number: "06"
+    }
   ];
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={buttonVariant} size={buttonSize} className={cn(buttonClassName)}>
+        <Button variant={buttonVariant} size={buttonSize} className={cn("font-semibold", buttonClassName)}>
           {buttonLabel}
         </Button>
       </DialogTrigger>
-      {/* Glassmorphism modal content */}
-      <DialogContent className="max-w-3xl bg-background/80 backdrop-blur-md border-2 border-border shadow-2xl">
-        <DialogHeader>
-          <DialogTitle>Pasos para participar en la rifa</DialogTitle>
-          <DialogDescription>
-            Sigue estos pasos para que tu boleto quede confirmado correctamente.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="overflow-x-auto py-2" ref={containerRef}>
-          <div className="flex gap-4 snap-x snap-mandatory px-1">
-            <div ref={(el) => { cardsRef.current[0] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-blue-300 bg-blue-50/60 dark:border-blue-600 dark:bg-blue-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <User className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">1</span>
-                <span className="font-semibold">Regístrate o inicia sesión</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Crea tu cuenta o entra con tu usuario para poder registrar tus boletos y subir comprobantes.
-              </p>
-            </div>
+      
+      <DialogContent className="max-w-6xl max-h-[90vh] bg-background/95 backdrop-blur-xl border-2 shadow-2xl p-0 overflow-hidden">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-background/95 via-background/98 to-background/95 backdrop-blur-xl border-b px-6 py-5">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Pasos para participar en la rifa
+            </DialogTitle>
+            <DialogDescription className="text-base mt-2">
+              Sigue estos pasos para que tu boleto quede confirmado correctamente.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
-            <div ref={(el) => { cardsRef.current[1] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-purple-300 bg-purple-50/60 dark:border-purple-600 dark:bg-purple-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Hash className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">2</span>
-                <span className="font-semibold">Selecciona tus números</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Elige boletos disponibles. Hasta 5 por persona; verifica disponibilidad en Transparencia.
-              </p>
-            </div>
+        <div className="overflow-y-auto px-6 py-6 max-h-[calc(90vh-200px)]">
+          {/* Vista Desktop/Tablet - Scroll horizontal */}
+          <div className="hidden md:block">
+            <div className="overflow-x-auto pb-4 -mx-2 px-2">
+              <div className="flex gap-4 min-w-max">
+                {steps.map((step, index) => {
+                  const Icon = step.icon;
+                  return (
+                    <div key={index} className="relative group">
+                      <div className={cn(
+                        "w-[320px] lg:w-[340px] rounded-xl border-2 p-6 transition-all duration-300",
+                        "hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1",
+                        step.bgColor,
+                        step.borderColor
+                      )}>
+                        {/* Número de paso */}
+                        <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full bg-background border-2 border-current flex items-center justify-center font-bold text-sm shadow-lg">
+                          {step.number}
+                        </div>
+                        
+                        {/* Icono con gradiente */}
+                        <div className={cn(
+                          "w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-lg",
+                          step.iconBg,
+                          "group-hover:scale-110 transition-transform duration-300"
+                        )}>
+                          <Icon className="h-7 w-7 text-white" />
+                        </div>
+                        
+                        <h3 className="font-bold text-lg mb-2 text-foreground">
+                          {step.title}
+                        </h3>
+                        
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {step.description}
+                        </p>
 
-            <div ref={(el) => { cardsRef.current[2] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-green-300 bg-green-50/60 dark:border-green-600 dark:bg-green-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Landmark className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">3</span>
-                <span className="font-semibold">Realiza tu transferencia</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Paga <strong>$35.00 MXN</strong> por boleto (o múltiplos si compras más).
-              </p>
-              <div className="mt-3">
-                <Button variant="outline" size="sm" className="border-green-400 text-green-700 dark:border-green-600 dark:text-green-300" onClick={() => setShowBank((v) => !v)}>
-                  <ChevronDown className={cn("mr-2 h-4 w-4 transition-transform", showBank ? "rotate-180" : "rotate-0")} /> Ver datos de transferencia
-                </Button>
-                {showBank && (
-                  <div className="mt-3 text-sm text-foreground/90 rounded-md border border-green-300/60 dark:border-green-600/60 p-3 bg-green-50/50 dark:bg-green-900/20">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">Banco:</span>
-                      <span>{bankName}</span>
+                        {/* Selector de boletos */}
+                        {step.interactive && (
+                          <div className="mt-4 p-4 rounded-lg bg-background/50 border">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="text-sm font-medium">Cantidad:</span>
+                              <div className="flex items-center gap-3">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={decrement}
+                                  className="h-8 w-8 p-0 rounded-full"
+                                >
+                                  -
+                                </Button>
+                                <div className="w-12 text-center font-bold text-lg">{tickets}</div>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={increment}
+                                  className="h-8 w-8 p-0 rounded-full"
+                                >
+                                  +
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="text-center py-2 px-3 rounded-md bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-300/30 dark:border-purple-700/30">
+                              <span className="text-sm">Total: </span>
+                              <span className="font-bold text-lg">${totalPrice} MXN</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Datos bancarios expandibles */}
+                        {step.expandable && (
+                          <div className="mt-4">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="w-full justify-between"
+                              onClick={() => setShowBank(!showBank)}
+                            >
+                              <span>Ver datos bancarios</span>
+                              <ChevronDown className={cn(
+                                "h-4 w-4 transition-transform duration-300",
+                                showBank ? "rotate-180" : "rotate-0"
+                              )} />
+                            </Button>
+                            
+                            {showBank && (
+                              <div className="mt-3 p-4 rounded-lg bg-background/70 border space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                                <div className="flex justify-between items-center text-sm">
+                                  <span className="font-medium text-muted-foreground">Banco:</span>
+                                  <span className="font-semibold">{bankName}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                  <span className="font-medium text-muted-foreground">Beneficiario:</span>
+                                  <span className="font-semibold">{bankBeneficiary}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm gap-2">
+                                  <span className="font-medium text-muted-foreground">CLABE:</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-mono text-xs">{bankClabe}</span>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="h-7 w-7 p-0"
+                                      onClick={() => copyToClipboard(bankClabe, "clabe")}
+                                    >
+                                      {copied === "clabe" ? 
+                                        <Check className="h-4 w-4 text-green-600" /> : 
+                                        <Copy className="h-4 w-4" />
+                                      }
+                                    </Button>
+                                  </div>
+                                </div>
+                                <div className="flex justify-between items-center text-sm gap-2">
+                                  <span className="font-medium text-muted-foreground">Concepto:</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs">{transferConcept}</span>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="h-7 w-7 p-0"
+                                      onClick={() => copyToClipboard(transferConcept, "concept")}
+                                    >
+                                      {copied === "concept" ? 
+                                        <Check className="h-4 w-4 text-green-600" /> : 
+                                        <Copy className="h-4 w-4" />
+                                      }
+                                    </Button>
+                                  </div>
+                                </div>
+                                {copied && (
+                                  <div className="text-xs text-green-600 dark:text-green-400 text-center py-1 animate-in fade-in duration-200">
+                                    ✓ {copied === "clabe" ? "CLABE" : "Concepto"} copiado al portapapeles
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Flecha conectora */}
+                      {index < steps.length - 1 && (
+                        <div className="absolute top-1/2 -right-2 transform -translate-y-1/2 translate-x-full z-10">
+                          <ArrowRight className="h-5 w-5 text-muted-foreground/30" />
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">Beneficiario:</span>
-                      <span>{bankBeneficiary}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">CLABE:</span>
-                      <span className="font-mono tracking-wider">{bankClabe}</span>
-                      <Button variant="ghost" size="sm" className="ml-2" onClick={() => copyToClipboard(bankClabe, "clabe")}>
-                        {copied === "clabe" ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">Concepto:</span>
-                      <span>{transferConcept}</span>
-                      <Button variant="ghost" size="sm" className="ml-2" onClick={() => copyToClipboard(transferConcept, "concept")}>
-                        {copied === "concept" ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                    {copied && (
-                      <div className="mt-2 text-xs text-green-700 dark:text-green-400">¡{copied === "clabe" ? "CLABE" : "Concepto"} copiado!</div>
-                    )}
-                  </div>
-                )}
+                  );
+                })}
               </div>
-            </div>
-
-            <div ref={(el) => { cardsRef.current[3] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-amber-300 bg-amber-50/60 dark:border-amber-600 dark:bg-amber-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <FileUp className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">4</span>
-                <span className="font-semibold">Sube tu comprobante</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Registra tus datos y sube el archivo (JPG, PNG o PDF).
-              </p>
-            </div>
-
-            <div ref={(el) => { cardsRef.current[4] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-teal-300 bg-teal-50/60 dark:border-teal-600 dark:bg-teal-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">5</span>
-                <span className="font-semibold">Validación manual</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Nuestro equipo revisa tu comprobante. Puede tomar hasta 24 horas.
-              </p>
-            </div>
-
-            <div ref={(el) => { cardsRef.current[5] = el; }} className="snap-start min-w-[280px] sm:min-w-[320px] md:min-w-[360px] lg:min-w-[380px] rounded-md border-2 border-emerald-300 bg-emerald-50/60 dark:border-emerald-600 dark:bg-emerald-900/30 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="h-5 w-5" />
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-sm bg-background border text-xs font-bold">6</span>
-                <span className="font-semibold">Confirmación y Transparencia</span>
-              </div>
-              <p className="text-sm text-foreground/90">
-                Al confirmar, tu boleto aparece públicamente en Transparencia y participa en el sorteo.
-              </p>
             </div>
           </div>
-        </div>
 
-        {/* Chips de navegación */}
-        <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {[0,1,2,3,4,5].map((i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => cardsRef.current[i]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" })}
-              className={cn(
-                "px-3 py-1 rounded-full text-sm border transition-colors",
-                activeStep === i
-                  ? chipActiveClasses[i]
-                  : "bg-background/70 text-foreground border-border hover:bg-accent/40"
-              )}
-            >
-              Paso {i + 1}
-            </button>
-          ))}
-        </div>
+          {/* Vista Mobile - Cards apiladas */}
+          <div className="md:hidden space-y-4">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div 
+                  key={index} 
+                  className={cn(
+                    "relative rounded-xl border-2 p-5 transition-all duration-300",
+                    step.bgColor,
+                    step.borderColor
+                  )}
+                >
+                  <div className="flex items-start gap-4">
+                    {/* Número y icono */}
+                    <div className="flex-shrink-0">
+                      <div className={cn(
+                        "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg relative",
+                        step.iconBg
+                      )}>
+                        <Icon className="h-6 w-6 text-white" />
+                        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-background border-2 border-current flex items-center justify-center text-xs font-bold">
+                          {step.number}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Contenido */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-base mb-1 text-foreground">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {step.description}
+                      </p>
 
-        <DialogFooter>
-          <Button asChild>
-            <Link href="/comprar">Ir a Comprar</Link>
-          </Button>
-          <Button asChild variant="outline" className="border-amber-400 text-amber-700 hover:bg-muted/30 dark:border-amber-600 dark:text-amber-300">
-            <Link href="/reglamento">Leer Reglamento</Link>
-          </Button>
-        </DialogFooter>
+                      {/* Selector de boletos mobile */}
+                      {step.interactive && (
+                        <div className="mt-3 p-3 rounded-lg bg-background/50 border">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium">Cantidad:</span>
+                            <div className="flex items-center gap-2">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={decrement}
+                                className="h-8 w-8 p-0 rounded-full"
+                              >
+                                -
+                              </Button>
+                              <div className="w-10 text-center font-bold">{tickets}</div>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={increment}
+                                className="h-8 w-8 p-0 rounded-full"
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="text-center py-2 px-3 rounded-md bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-300/30">
+                            <span className="text-sm">Total: </span>
+                            <span className="font-bold">${totalPrice} MXN</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Datos bancarios mobile */}
+                      {step.expandable && (
+                        <div className="mt-3">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full justify-between text-xs"
+                            onClick={() => setShowBank(!showBank)}
+                          >
+                            <span>Ver datos bancarios</span>
+                            <ChevronDown className={cn(
+                              "h-4 w-4 transition-transform",
+                              showBank && "rotate-180"
+                            )} />
+                          </Button>
+                          
+                          {showBank && (
+                            <div className="mt-2 p-3 rounded-lg bg-background/70 border space-y-2 text-xs">
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Banco:</span>
+                                <span className="font-semibold">{bankName}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Beneficiario:</span>
+                                <span className="font-semibold">{bankBeneficiary}</span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-muted-foreground">CLABE:</span>
+                                <div className="flex items-center gap-1">
+                                  <span className="font-mono text-[10px]">{bankClabe}</span>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-6 w-6 p-0"
+                                    onClick={() => copyToClipboard(bankClabe, "clabe")}
+                                  >
+                                    {copied === "clabe" ? 
+                                      <Check className="h-3 w-3 text-green-600" /> : 
+                                      <Copy className="h-3 w-3" />
+                                    }
+                                  </Button>
+                                </div>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-muted-foreground">Concepto:</span>
+                                <div className="flex items-center gap-1">
+                                  <span className="text-[10px]">{transferConcept}</span>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-6 w-6 p-0"
+                                    onClick={() => copyToClipboard(transferConcept, "concept")}
+                                  >
+                                    {copied === "concept" ? 
+                                      <Check className="h-3 w-3 text-green-600" /> : 
+                                      <Copy className="h-3 w-3" />
+                                    }
+                                  </Button>
+                                </div>
+                              </div>
+                              {copied && (
+                                <div className="text-[10px] text-green-600 text-center py-1">
+                                  ✓ {copied === "clabe" ? "CLABE" : "Concepto"} copiado
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Separador mobile */}
+                  {index < steps.length - 1 && (
+                    <div className="flex justify-center mt-3 mb-1">
+                      <div className="w-px h-4 bg-gradient-to-b from-border to-transparent" />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Nota informativa */}
+          <div className="mt-6 p-4 rounded-lg bg-muted/50 border text-center">
+            <p className="text-sm text-muted-foreground">
+              💡 <span className="font-medium">Tip:</span> Puedes calcular el total antes de comprar usando el selector de cantidad
+            </p>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
