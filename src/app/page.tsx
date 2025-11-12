@@ -3,6 +3,7 @@ import CountdownBanner from "./components/CountdownBanner";
 import ClientOnly from "./components/ClientOnly";
 import PrizeCard from "./components/PrizeCard";
 import { Button } from "@/components/ui/button";
+import StepsModal from "@/components/StepsModal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -46,6 +47,14 @@ export default async function Home() {
               <div className="text-2xl font-bold tracking-tight text-foreground">$35 MXN</div>
               <div className="text-sm text-muted-foreground">por boleto</div>
             </div>
+          </div>
+          {/* Botón y modal de pasos a seguir (de vuelta al hero) */}
+          <div className="mt-4">
+            <StepsModal 
+              buttonVariant="outline"
+              buttonSize="lg"
+              buttonClassName="border-2 border-blue-400 text-blue-700 bg-muted/30 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/30"
+            />
           </div>
         </div>
       </section>
