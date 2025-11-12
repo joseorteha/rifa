@@ -202,20 +202,20 @@ export default function PaymentForm() {
           
           <Card className="bg-muted/50">
             <CardContent className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                <div className="flex justify-between">
+              <div className="grid grid-cols-1 gap-3 text-sm">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                   <span className="text-muted-foreground">Banco:</span>
                   <span className="font-medium">{paymentConfig.banco}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                   <span className="text-muted-foreground">Beneficiario:</span>
                   <span className="font-medium">{paymentConfig.beneficiario}</span>
                 </div>
-                <div className="flex justify-between md:col-span-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                   <span className="text-muted-foreground">CLABE:</span>
-                  <span className="font-mono font-medium">{paymentConfig.clabe}</span>
+                  <span className="font-mono font-medium break-all">{paymentConfig.clabe}</span>
                 </div>
-                <div className="flex justify-between md:col-span-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                   <span className="text-muted-foreground">Concepto:</span>
                   <span className="font-medium">{paymentConfig.concepto}</span>
                 </div>
@@ -238,31 +238,33 @@ export default function PaymentForm() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Nombre Completo *</label>
-                <input
-                  type="text"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  required
-                  minLength={3}
-                  className="w-full rounded-md border border-border px-3 py-2 bg-background"
-                  placeholder="Juan Pérez"
-                />
-              </div>
+            <div className="grid gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Nombre Completo *</label>
+                  <input
+                    type="text"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                    minLength={3}
+                    className="w-full rounded-md border border-border px-3 py-2 bg-background text-sm"
+                    placeholder="Juan Pérez"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Correo Electrónico *</label>
-                <input
-                  type="email"
-                  value={user?.email || ""}
-                  readOnly
-                  className="w-full rounded-md border border-border px-3 py-2 bg-muted"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Este es tu correo de cuenta
-                </p>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Correo Electrónico *</label>
+                  <input
+                    type="email"
+                    value={user?.email || ""}
+                    readOnly
+                    className="w-full rounded-md border border-border px-3 py-2 bg-muted text-sm"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Este es tu correo de cuenta
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -271,66 +273,69 @@ export default function PaymentForm() {
                   type="tel"
                   value={telefono}
                   onChange={(e) => setTelefono(e.target.value)}
-                  className="w-full rounded-md border border-border px-3 py-2 bg-background"
+                  className="w-full rounded-md border border-border px-3 py-2 bg-background text-sm"
                   placeholder="2711234567"
                 />
               </div>
 
-              <div className="sm:col-span-2">
+              {/* Selector de boletos en su propia sección */}
+              <div className="pt-2">
                 <TicketSelector
                   selectedTickets={selectedTickets}
                   setSelectedTickets={setSelectedTickets}
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Tipo de participante *</label>
-                <div className="mt-2 flex gap-4">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="tipo_participante"
-                      value="Público General"
-                      checked={tipo === "Público General"}
-                      onChange={() => setTipo("Público General")}
-                      className="w-4 h-4"
-                    />
-                    Público General
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name="tipo_participante"
-                      value="Estudiante TecNM"
-                      checked={tipo === "Estudiante TecNM"}
-                      onChange={() => setTipo("Estudiante TecNM")}
-                      className="w-4 h-4"
-                    />
-                    Estudiante TecNM
-                  </label>
-                </div>
-              </div>
-
-              {necesitaSede && (
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Sede *</label>
-                  <select
-                    value={sede}
-                    onChange={(e) => setSede(e.target.value)}
-                    required={necesitaSede}
-                    className="w-full rounded-md border border-border px-3 py-2 bg-background"
-                  >
-                    <option value="">Selecciona tu sede</option>
-                    <option>Zongolica</option>
-                    <option>Nogales</option>
-                    <option>Tezonapa</option>
-                    <option>Tehuipango</option>
-                    <option>Tequila</option>
-                    <option>Cuichapa</option>
-                    <option>Acultzinapa</option>
-                  </select>
+                  <label className="block text-sm font-medium mb-2">Tipo de participante *</label>
+                  <div className="mt-2 space-y-2 sm:space-y-0 sm:flex sm:gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="tipo_participante"
+                        value="Público General"
+                        checked={tipo === "Público General"}
+                        onChange={() => setTipo("Público General")}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm">Público General</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="tipo_participante"
+                        value="Estudiante TecNM"
+                        checked={tipo === "Estudiante TecNM"}
+                        onChange={() => setTipo("Estudiante TecNM")}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm">Estudiante TecNM</span>
+                    </label>
+                  </div>
                 </div>
-              )}
+
+                {necesitaSede && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Sede *</label>
+                    <select
+                      value={sede}
+                      onChange={(e) => setSede(e.target.value)}
+                      required={necesitaSede}
+                      className="w-full rounded-md border border-border px-3 py-2 bg-background text-sm"
+                    >
+                      <option value="">Selecciona tu sede</option>
+                      <option>Zongolica</option>
+                      <option>Nogales</option>
+                      <option>Tezonapa</option>
+                      <option>Tehuipango</option>
+                      <option>Tequila</option>
+                      <option>Cuichapa</option>
+                      <option>Acultzinapa</option>
+                    </select>
+                  </div>
+                )}
+              </div>
 
               {necesitaSede && (
                 <div>
@@ -340,7 +345,7 @@ export default function PaymentForm() {
                     value={numeroControl}
                     onChange={(e) => setNumeroControl(e.target.value)}
                     required={necesitaSede}
-                    className="w-full rounded-md border border-border px-3 py-2 bg-background"
+                    className="w-full rounded-md border border-border px-3 py-2 bg-background text-sm"
                     placeholder="Ej: 226w0448"
                     pattern="[0-9]{3}[A-Za-z]{1}[0-9]{4}"
                     title="Formato: 226w0448 (3 dígitos, 1 letra, 4 dígitos)"
