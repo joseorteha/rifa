@@ -117,13 +117,13 @@ export default function TicketSelector({
                 onClick={() => isAvailable && handleTicketSelect(numero_boleto)}
                 disabled={!isAvailable}
                 className={`
-                  aspect-square p-1 sm:p-2 h-auto font-mono text-[10px] xs:text-xs sm:text-sm font-bold
+                  aspect-square p-1 sm:p-2 h-auto font-mono text-[10px] xs:text-xs sm:text-xs md:text-sm font-bold leading-none
                   transition-all duration-200 hover:scale-105 active:scale-95
                   ${!isAvailable
-                    ? 'opacity-50 cursor-not-allowed bg-muted text-muted-foreground border border-muted-foreground/20'
-                    : isSelected
-                    ? 'bg-green-600 hover:bg-green-700 text-white shadow-md sm:shadow-lg border-2 border-green-500'
-                    : 'bg-background hover:bg-blue-50 dark:hover:bg-blue-950 border-2 border-blue-400 dark:border-blue-600 text-foreground hover:border-blue-600 dark:hover:border-blue-400 shadow-sm'
+                     ? 'opacity-50 cursor-not-allowed bg-muted text-muted-foreground border border-muted-foreground/20'
+                     : isSelected
+                     ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-md sm:shadow-lg border-2 border-emerald-500'
+                     : 'bg-background hover:bg-blue-50 dark:hover:bg-blue-950 border-2 border-blue-400 dark:border-blue-600 text-foreground hover:border-blue-600 dark:hover:border-blue-400 shadow-sm'
                   }
                 `}
                 title={
@@ -132,7 +132,7 @@ export default function TicketSelector({
                     : `Boleto ${numero_boleto} - Disponible`
                 }
               >
-                <span className="truncate">{numero_boleto.padStart(3, '0')}</span>
+                <span>{numero_boleto.padStart(3, '0')}</span>
               </Button>
             );
           })}
@@ -151,7 +151,7 @@ export default function TicketSelector({
                   <span>Disponible</span>
                 </div>
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-600 border-2 border-green-500 rounded shrink-0 shadow-sm"></div>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-emerald-600 border-2 border-emerald-500 rounded shrink-0 shadow-sm"></div>
                   <span>Seleccionado</span>
                 </div>
                 <div className="flex items-center gap-1.5 sm:gap-2">

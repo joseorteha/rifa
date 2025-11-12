@@ -85,17 +85,17 @@ export default function ComprarPage() {
         <CardContent className="pt-6">
           <h3 className="font-semibold text-center mb-4">¿Necesitas más información?</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Button variant="outline" className="w-full shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="w-full shadow-sm border-2 border-blue-400 text-blue-700 bg-muted/30 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/30" asChild>
               <Link href="/premios" className="flex items-center justify-center gap-2">
                 🏆 <span className="hidden sm:inline">Ver detalles del</span> Premio
               </Link>
             </Button>
-            <Button variant="outline" className="w-full shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="w-full shadow-sm border-2 border-green-400 text-green-700 bg-muted/30 hover:bg-green-50 dark:border-green-600 dark:text-green-300 dark:hover:bg-green-950/30" asChild>
               <Link href="/transparencia" className="flex items-center justify-center gap-2">
                 👀 <span className="hidden sm:inline">Ver</span> Boletos<span className="hidden sm:inline"> participantes</span>
               </Link>
             </Button>
-            <Button variant="outline" className="w-full shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="w-full shadow-sm border-2 border-amber-400 text-amber-700 bg-muted/30 hover:bg-amber-50 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-950/30" asChild>
               <Link href="/reglamento" className="flex items-center justify-center gap-2">
                 📋 <span className="hidden sm:inline">Leer</span> Reglamento
               </Link>

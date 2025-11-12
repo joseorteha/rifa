@@ -221,7 +221,7 @@ export default function PremiosPage() {
                 🎫 Comprar mi boleto ahora
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" className="border-2 border-green-400 text-green-700 bg-muted/30 hover:bg-green-50 dark:border-green-600 dark:text-green-300 dark:hover:bg-green-950/30" asChild>
               <Link href="/transparencia">
                 👀 Ver transparencia
               </Link>

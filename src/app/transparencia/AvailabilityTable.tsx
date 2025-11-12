@@ -63,13 +63,13 @@ export default function AvailabilityTable() {
     <div className="space-y-4">
       {/* Estadísticas responsive */}
       <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
-        <span className="px-3 py-1.5 rounded-md border-2 bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800 font-medium">
+        <span className="px-3 py-1.5 rounded-md border-2 bg-background text-foreground border-blue-400 dark:border-blue-500 font-medium">
           ✓ Disponibles: {disponibles}
         </span>
-        <span className="px-3 py-1.5 rounded-md border-2 bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800 font-medium">
+        <span className="px-3 py-1.5 rounded-md border-2 bg-background text-amber-700 border-amber-400 dark:text-amber-300 dark:border-amber-600 font-medium">
           ⏳ Pendientes: {pendientes}
         </span>
-        <span className="px-3 py-1.5 rounded-md border-2 bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800 font-medium">
+        <span className="px-3 py-1.5 rounded-md border-2 bg-background text-emerald-700 border-emerald-400 dark:text-emerald-300 dark:border-emerald-600 font-medium">
           ✅ Confirmados: {confirmados}
         </span>
       </div>
@@ -82,10 +82,10 @@ export default function AvailabilityTable() {
             className={`
               p-1.5 sm:p-2 text-center text-[10px] xs:text-xs sm:text-sm font-bold rounded border-2 transition-all duration-200
               ${r.estado === "disponible" 
-                ? "bg-green-50 text-green-700 border-green-300 dark:bg-green-900/20 dark:text-green-300 dark:border-green-700"
+                ? "bg-background text-foreground border-blue-400 dark:border-blue-500"
                 : r.estado === "pendiente"
-                ? "bg-yellow-50 text-yellow-700 border-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-700"
-                : "bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700"
+                ? "bg-background text-amber-700 border-amber-400 dark:text-amber-300 dark:border-amber-600"
+                : "bg-background text-emerald-700 border-emerald-400 dark:text-emerald-300 dark:border-emerald-600"
               }
             `}
             title={`Boleto ${r.numero_boleto} - ${r.estado}`}

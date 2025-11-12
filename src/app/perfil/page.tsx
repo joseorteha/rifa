@@ -59,7 +59,7 @@ export default function PerfilPage() {
       <div className="max-w-4xl mx-auto p-6">
         <div className="rounded-lg border bg-card p-6 text-center">
           <p className="text-destructive">{error}</p>
-          <Link href="/" className="inline-block mt-4 px-4 py-2 rounded-md border hover:bg-accent">
+          <Link href="/" className="inline-block mt-4 px-4 py-2 rounded-md border-2 bg-muted/30 hover:bg-muted/50">
             Volver al inicio
           </Link>
         </div>
@@ -133,9 +133,9 @@ export default function PerfilPage() {
                       <span
                         className={`px-2 py-1 rounded-md text-xs font-medium ${
                           boleto.estado === "confirmado"
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
                             : boleto.estado === "pendiente"
-                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                            ? "bg-amber-100 text-amber-900 dark:bg-amber-900 dark:text-amber-200"
                             : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                         }`}
                       >
@@ -194,7 +194,7 @@ export default function PerfilPage() {
 
                 {boleto.estado === "confirmado" && (
                   <div className="mt-3 pt-3 border-t">
-                    <p className="text-xs text-green-600 dark:text-green-400">
+                    <p className="text-xs text-emerald-600 dark:text-emerald-400">
                       ✓ Tu boleto está confirmado y participará en el sorteo. ¡Buena suerte!
                     </p>
                   </div>
@@ -207,10 +207,10 @@ export default function PerfilPage() {
 
       {/* Acciones */}
       <div className="flex gap-3">
-        <Link href="/transparencia" className="px-4 py-2 rounded-md border hover:bg-accent">
+        <Link href="/transparencia" className="px-4 py-2 rounded-md border-2 border-green-400 text-green-700 bg-muted/30 hover:bg-green-50 dark:border-green-600 dark:text-green-300 dark:hover:bg-green-950/30">
           Ver Transparencia
         </Link>
-        <Link href="/reglamento" className="px-4 py-2 rounded-md border hover:bg-accent">
+        <Link href="/reglamento" className="px-4 py-2 rounded-md border-2 border-amber-400 text-amber-700 bg-muted/30 hover:bg-amber-50 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-950/30">
           Ver Reglamento
         </Link>
       </div>

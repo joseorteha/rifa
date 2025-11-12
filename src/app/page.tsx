@@ -77,7 +77,7 @@ export default async function Home() {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="shadow-sm border-2 border-blue-400 text-blue-700 bg-muted/30 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/30" asChild>
               <Link href="/premios" className="flex items-center gap-2">
                 🏆 Ver detalles del premio
               </Link>
@@ -133,12 +133,12 @@ export default async function Home() {
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="shadow-sm border-2 border-green-400 text-green-700 bg-muted/30 hover:bg-green-50 dark:border-green-600 dark:text-green-300 dark:hover:bg-green-950/30" asChild>
               <Link href="/transparencia" className="flex items-center gap-2">
                 👁️ Ver boletos participantes
               </Link>
             </Button>
-            <Button variant="outline" className="shadow-sm bg-background hover:bg-accent border border-border" asChild>
+            <Button variant="outline" className="shadow-sm border-2 border-amber-400 text-amber-700 bg-muted/30 hover:bg-amber-50 dark:border-amber-600 dark:text-amber-300 dark:hover:bg-amber-950/30" asChild>
               <Link href="/reglamento" className="flex items-center gap-2">
                 📋 Leer reglamento
               </Link>
