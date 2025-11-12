@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { User, Hash, Landmark, FileUp, Clock, CheckCircle, ChevronDown, Copy, Check, ArrowRight } from "lucide-react";
+import { User, Hash, Landmark, FileUp, Clock, CheckCircle, ChevronDown, Copy, Check, ArrowRight, X as XIcon } from "lucide-react";
 
 type StepsModalProps = {
   buttonLabel?: string;
@@ -121,8 +121,8 @@ export default function StepsModal({
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-6xl max-h-[90vh] bg-background/95 backdrop-blur-xl border-2 shadow-2xl p-0 overflow-hidden">
-        <div className="sticky top-0 z-10 bg-gradient-to-r from-background/95 via-background/98 to-background/95 backdrop-blur-xl border-b px-6 py-5">
+      <DialogContent showCloseButton={false} className="max-w-6xl max-h-[90vh] bg-background/95 backdrop-blur-xl border-2 shadow-2xl p-0 overflow-hidden rounded-xl">
+        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-xl border-b px-6 py-5">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               Pasos para participar en la rifa
@@ -131,6 +131,12 @@ export default function StepsModal({
               Sigue estos pasos para que tu boleto quede confirmado correctamente.
             </DialogDescription>
           </DialogHeader>
+          {/* Close button en el header */}
+          <DialogClose asChild>
+            <Button aria-label="Cerrar" variant="ghost" size="icon-sm" className="absolute right-4 top-4">
+              <XIcon className="h-4 w-4" />
+            </Button>
+          </DialogClose>
         </div>
 
         <div className="overflow-y-auto px-6 py-6 max-h-[calc(90vh-200px)]">
@@ -172,7 +178,7 @@ export default function StepsModal({
 
                         {/* Selector de boletos */}
                         {step.interactive && (
-                          <div className="mt-4 p-4 rounded-lg bg-background/50 border">
+                          <div className="mt-4 p-4 rounded-lg bg-background/60 border border-border">
                             <div className="flex items-center justify-between mb-3">
                               <span className="text-sm font-medium">Cantidad:</span>
                               <div className="flex items-center gap-3">
@@ -195,7 +201,7 @@ export default function StepsModal({
                                 </Button>
                               </div>
                             </div>
-                            <div className="text-center py-2 px-3 rounded-md bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-300/30 dark:border-purple-700/30">
+                            <div className="text-center py-2 px-3 rounded-md bg-gradient-to-r from-purple-400/10 to-pink-400/10 border border-purple-300/40 dark:border-purple-700/30">
                               <span className="text-sm">Total: </span>
                               <span className="font-bold text-lg">${totalPrice} MXN</span>
                             </div>
@@ -219,7 +225,7 @@ export default function StepsModal({
                             </Button>
                             
                             {showBank && (
-                              <div className="mt-3 p-4 rounded-lg bg-background/70 border space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                              <div className="mt-3 p-4 rounded-lg bg-background/70 border border-border space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
                                 <div className="flex justify-between items-center text-sm">
                                   <span className="font-medium text-muted-foreground">Banco:</span>
                                   <span className="font-semibold">{bankName}</span>
@@ -302,15 +308,15 @@ export default function StepsModal({
                   <div className="flex items-start gap-4">
                     {/* Número y icono */}
                     <div className="flex-shrink-0">
-                      <div className={cn(
-                        "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg relative",
-                        step.iconBg
-                      )}>
-                        <Icon className="h-6 w-6 text-white" />
-                        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-background border-2 border-current flex items-center justify-center text-xs font-bold">
-                          {step.number}
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl flex items-center justify-center shadow-lg relative",
+                          step.iconBg
+                        )}>
+                          <Icon className="h-6 w-6 text-white" />
+                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-background border-2 border-current flex items-center justify-center text-xs font-bold">
+                            {step.number}
+                          </div>
                         </div>
-                      </div>
                     </div>
                     
                     {/* Contenido */}
@@ -324,7 +330,7 @@ export default function StepsModal({
 
                       {/* Selector de boletos mobile */}
                       {step.interactive && (
-                        <div className="mt-3 p-3 rounded-lg bg-background/50 border">
+                        <div className="mt-3 p-3 rounded-lg bg-background/60 border border-border">
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-medium">Cantidad:</span>
                             <div className="flex items-center gap-2">
@@ -371,7 +377,7 @@ export default function StepsModal({
                           </Button>
                           
                           {showBank && (
-                            <div className="mt-2 p-3 rounded-lg bg-background/70 border space-y-2 text-xs">
+                            <div className="mt-2 p-3 rounded-lg bg-background/70 border border-border space-y-2 text-xs">
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Banco:</span>
                                 <span className="font-semibold">{bankName}</span>
