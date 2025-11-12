@@ -20,8 +20,25 @@ export default function AvailabilityTable() {
     try {
       const data = await boletosAPI.getCatalogo();
       
-      // Generar todos los números del 001 al 150
-      const allNumbers = Array.from({ length: 150 }, (_, i) => {
+      // Determinar el total real de boletos.
+      // Preferimos el mayor número presente en los datos (por si hay hasta 200 en la BD),
+      // luego la variable de entorno NEXT_PUBLIC_TOTAL_BOLETOS si está definida,
+      // y por último fallback a 150 para compatibilidad.
+      const maxFromData = data && data.length > 0
+        ? data.reduce((acc: number, item: any) => {
+            const n = parseInt(item.numero_boleto, 10);
+            return Number.isFinite(n) ? Math.max(acc, n) : acc;
+          }, 0)
+        : 0;
+
+      const envTotal = typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_TOTAL_BOLETOS
+        ? parseInt(process.env.NEXT_PUBLIC_TOTAL_BOLETOS, 10)
+        : NaN;
+
+      const totalBoletos = Math.max(150, maxFromData || 0, Number.isFinite(envTotal) ? envTotal : 0);
+
+      // Generar rangos desde 1 hasta totalBoletos (ej. 200)
+      const allNumbers = Array.from({ length: totalBoletos }, (_, i) => {
         const numero = String(i + 1).padStart(3, '0');
         const found = data.find((item: any) => item.numero_boleto === numero);
         return {
