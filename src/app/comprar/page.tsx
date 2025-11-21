@@ -37,7 +37,7 @@ export default function ComprarPage() {
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                 <span className="text-muted-foreground">Fecha del sorteo:</span>
-                <span className="font-medium">21 de noviembre, 8:00 PM</span>
+                <span className="font-medium">23 de noviembre, 8:00 PM</span>
               </div>
             </div>
           </div>

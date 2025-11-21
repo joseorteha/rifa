@@ -35,7 +35,7 @@ class GmailService {
           <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3>🏆 Detalles del Premio:</h3>
             <p><strong>Kit Gamer 4-en-1 Profesional</strong></p>
-            <p>Fecha: <strong>21 de noviembre, 8:00 PM</strong></p>
+            <p>Fecha: <strong>23 de noviembre, 8:00 PM</strong></p>
             <p>Boletos: <strong>$30 MXN c/u</strong></p>
           </div>
           

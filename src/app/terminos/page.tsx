@@ -131,7 +131,7 @@ export default function TerminosPage() {
           <div className="space-y-3 text-sm sm:text-base text-muted-foreground">
             <h3 className="font-semibold text-foreground">6.1 Fecha y Hora</h3>
             <p className="leading-relaxed">
-              El sorteo se realizará el <strong>21 de noviembre de 2025 a las 8:00 PM</strong> (hora del centro de México).
+              El sorteo se realizará el <strong>23 de noviembre de 2025 a las 8:00 PM</strong> (hora del centro de México).
             </p>
 
             <h3 className="font-semibold text-foreground mt-4">6.2 Transmisión en Vivo</h3>

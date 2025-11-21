@@ -230,7 +230,7 @@ export default function PremiosPage() {
 
           <div className="pt-4 border-t border-blue-200 dark:border-blue-800">
             <p className="text-sm text-blue-600 dark:text-blue-400">
-              <span className="font-semibold">Sorteo:</span> 21 de noviembre de 2025 a las 8:00 PM • 
+              <span className="font-semibold">Sorteo:</span> 22 de noviembre de 2025 a las 8:00 PM • 
               <span className="font-semibold"> Precio:</span> $30 MXN por boleto
             </p>
           </div>

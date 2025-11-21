@@ -16,7 +16,7 @@ export default function ReglamentoPage() {
       numero: "2", 
       titulo: "Vigencia",
       icono: "📅",
-      contenido: "Del 12 de noviembre al 21 de noviembre de 2025, hasta las 20:00 hrs.",
+      contenido: "Del 12 de noviembre al 22 de noviembre de 2025, hasta las 20:00 hrs.",
       color: "border-purple-400 bg-background dark:border-purple-600"
     },
     {
@@ -44,7 +44,7 @@ export default function ReglamentoPage() {
       numero: "6",
       titulo: "Sorteo",
       icono: "🎲",
-      contenido: "21 de noviembre de 2025 a las 20:00 hrs. Transmisión en vivo por Facebook para máxima transparencia.",
+      contenido: "23 de noviembre de 2025 a las 20:00 hrs. Transmisión en vivo por Facebook para máxima transparencia.",
       color: "border-red-400 bg-background dark:border-red-600"
     },
     {

@@ -18,7 +18,7 @@ function formatRemaining(ms: number) {
 export default function CountdownBanner({ endDate }: { endDate: Date }) {
   // Fecha de inicio de la rifa: 12 de noviembre de 2025 a las 12:00 PM (hora local)
   const startDate = new Date(2025, 10, 12, 12, 0, 0);
-  // Fecha de fin: la que se pasa como parámetro (21 de noviembre de 2025)
+  // Fecha de fin: la que se pasa como parámetro (22 de noviembre de 2025)
   
   const [currentTime, setCurrentTime] = useState<number>(Date.now());
   
@@ -52,7 +52,7 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
     // Durante la rifa - mostrar tiempo hasta que termine
     targetTime = endTime;
     timeRemaining = endTime - now;
-    title = "El sorteo termina en:";
+    title = "La venta termina en:";
     description = "No esperes hasta el último momento. Asegura tu boleto ahora.";
   } else {
     // Después del fin - rifa terminada
@@ -128,7 +128,7 @@ export default function CountdownBanner({ endDate }: { endDate: Date }) {
             <span>
               {beforeStart 
                 ? "Rifa inicia: 12 de noviembre, 12:00 PM"
-                : "Sorteo: 21 de noviembre, 8:00 PM"
+                : "Cierre venta: 22 nov 8PM | Sorteo: 23 nov 8PM"
               }
             </span>
           </div>

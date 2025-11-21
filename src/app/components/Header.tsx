@@ -101,7 +101,7 @@ export default function Header() {
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/perfil" className="flex items-center space-x-2">
                     <span className="text-sm">👋</span>
-                    <span className="font-medium">{user.nombre.split(' ')[0]}</span>
+                    <span className="font-medium">{user.nombre?.split(' ')[0] || 'Usuario'}</span>
                     {user.email_verificado && (
                       <Badge variant="secondary" className="text-xs">
                         ✓
@@ -198,7 +198,7 @@ export default function Header() {
                             className="flex items-center space-x-2"
                           >
                             <span className="text-sm">👤</span>
-                            <span>Mi Perfil ({user.nombre.split(' ')[0]})</span>
+                            <span>Mi Perfil ({user.nombre?.split(' ')[0] || 'Usuario'})</span>
                             {user.email_verificado && (
                               <Badge variant="secondary" className="text-xs ml-auto">
                                 ✓

@@ -8,8 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 
 export default async function Home() {
-  const sorteoAt = process.env.NEXT_PUBLIC_SORTEO_AT || "2025-11-21T20:00:00";
-  const endDate = new Date(sorteoAt);
+  // 22 de noviembre 2025 a las 8:00 PM (hora de México)
+  const endDate = new Date(2025, 10, 22, 20, 0, 0); // Mes 10 = noviembre (0-indexed)
 
   return (
     <div className="flex flex-col">

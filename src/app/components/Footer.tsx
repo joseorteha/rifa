@@ -65,7 +65,7 @@ export default function Footer() {
             <div className="space-y-4 text-muted-foreground">
               <div>
                 <p className="font-medium text-foreground">📅 Sorteo</p>
-                <p className="mt-1">21 de noviembre, 8:00 PM</p>
+                <p className="mt-1">23 de noviembre, 8:00 PM</p>
               </div>
               <div>
                 <p className="font-medium text-foreground">🎫 Precio</p>

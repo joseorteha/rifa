@@ -120,7 +120,7 @@ export class EmailService {
               <div class="prize-info">
                 <h3 style="margin-top: 0; color: #2563eb;">🏆 Premio del Sorteo</h3>
                 <p><strong>Kit Gamer 4-en-1 Profesional</strong></p>
-                <p>Fecha del sorteo: <strong>21 de noviembre, 8:00 PM</strong></p>
+                <p>Fecha del sorteo: <strong>23 de noviembre, 8:00 PM</strong></p>
                 <p>Precio por boleto: <strong>$30 MXN</strong></p>
               </div>
               
@@ -179,7 +179,7 @@ Este enlace expira en 24 horas.
 ${process.env.NODE_ENV === 'development' ? `[DESARROLLO] Email original: ${email}` : ''}
 
 Premio: Kit Gamer 4-en-1 Profesional
-Fecha del sorteo: 21 de noviembre, 8:00 PM
+Fecha del sorteo: 23 de noviembre, 8:00 PM
 Precio por boleto: $30 MXN
 
 Si no solicitaste crear una cuenta, puedes ignorar este correo.
@@ -243,7 +243,7 @@ Si no solicitaste crear una cuenta, puedes ignorar este correo.
               
               <p><strong>Detalles del sorteo:</strong></p>
               <ul>
-                <li>📅 Fecha: 21 de noviembre de 2025</li>
+                <li>📅 Fecha: 23 de noviembre de 2025</li>
                 <li>⏰ Hora: 8:00 PM</li>
                 <li>🎮 Premio: Kit Gamer 4-en-1 Profesional</li>
                 <li>📍 Transmisión en vivo por nuestras redes sociales</li>
